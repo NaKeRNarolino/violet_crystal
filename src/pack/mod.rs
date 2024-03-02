@@ -1,6 +1,7 @@
 use std::fs;
 
 use askama::Template;
+use serde::de::value::Error;
 
 use crate::item::{self, Item};
 use crate::logger::info;
@@ -47,7 +48,8 @@ impl<'a> Pack<'a> {
             use_scripts,
         }
     }
-    pub fn create(&mut self) {
+
+    pub fn create(&mut self) -> () {
         info(
             format!("Creating Pack \"{}\"(\"{}\")", &self.name, &self.id),
             "[ PACK ]".to_string(),
