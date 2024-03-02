@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "metadata": {
+    "authors": ["{{ author }}"]
+  },
+  "header": {
+    "name": "{{ name }}",
+    "description": "{{ description }}",
+    "min_engine_version": [1, 20, 40],
+    "uuid": "{{ uuid_1 }}",
+    "version": [1, 0, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "{{ uuid_2 }}",
+      "version": [1, 0, 0]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "{{ uuid_3 }}",
+      "entry": "scripts/main.js",
+      "version": [1, 0, 0]
+    }
+  ],
+  {% if use_scripts %} 
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "{{ server_version }}"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "{{ server_ui_version }}"
+    }
+  ]
+  {% endif %}
+}

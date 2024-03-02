@@ -8,3 +8,14 @@ edition = "2021"
 [dependencies]
 askama = "0.12.1"
 serde = { features = ["derive"] }
+log = "0.4.20"
+simplelog = "0.12.1"
+colored = "2.1.0"
+
+[dependencies.uuid]
+version = "1.7.0"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
