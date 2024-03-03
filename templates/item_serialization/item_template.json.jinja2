@@ -1,0 +1,13 @@
+{
+  "format_version": "1.20.40",
+  "minecraft:item": {
+    "description": {
+      "identifier": "{{id}}"
+    },
+    "components": {
+    {% for component in components %}
+    {{ component }}
+    {% endfor %}
+  }
+  }
+}

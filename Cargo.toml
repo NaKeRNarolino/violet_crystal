@@ -11,6 +11,8 @@ serde = { features = ["derive"] }
 log = "0.4.20"
 simplelog = "0.12.1"
 colored = "2.1.0"
+syn-select = "0.3.0"
+jsonxf = "1.1"
 
 [dependencies.uuid]
 version = "1.7.0"

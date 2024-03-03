@@ -1,0 +1,39 @@
+{
+  "format_version": 2,
+  "metadata": {
+    "authors": ["NaKeR"]
+  },
+  "header": {
+    "name": "Test",
+    "description": "Nothing here",
+    "min_engine_version": [1, 20, 40],
+    "uuid": "43ee1c69-4e7e-4920-b1cb-3f5553945f8b",
+    "version": [1, 0, 0]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "109b81d3-4a03-4836-a6fa-4bbfbf08e47c",
+      "version": [1, 0, 0]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "aca11444-4641-4c72-8c35-c9792e571ef7",
+      "entry": "scripts/main.js",
+      "version": [1, 0, 0]
+    }
+  ],
+   
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.9.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.2.0-beta"
+    }
+  ]
+  
+}
