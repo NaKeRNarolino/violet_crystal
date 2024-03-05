@@ -7,8 +7,9 @@ Pack generation
 Item creation (about all of the components are there!)
 
 ### Plans:
-Blocks
-Entities
-Animation / Render controllers
+Blocks;
+Entities;
+Animation / Render controllers;
+Script support (pairing a folder with js scripts with the pack)
 
 I started this project only to learn Rust, but I'll be really happy if someone would actually use it.
