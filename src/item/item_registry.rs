@@ -28,7 +28,12 @@ impl ItemAtlasEntry {
     fn serialize(&self) -> String {
         ItemAtlasEntryTemplate {
             texture_path: format!("textures/items/{}", self.clone().texture_name),
-            id: self.clone().id,
+            id: self
+                .clone()
+                .id
+                .chars()
+                .map(|x| if x == ':' { '_' } else { x })
+                .collect(),
         }
         .render()
         .unwrap()

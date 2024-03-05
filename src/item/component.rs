@@ -189,3 +189,47 @@ impl ItemComponent for ItemDurabilityComponent {
         val
     }
 }
+
+// * ItemArmorComponent
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/armor.json.jinja2",
+    escape = "none"
+)]
+struct ItemArmorComponentTemplate {
+    protection: i32,
+}
+pub struct ItemArmorComponent {
+    protection: i32,
+}
+impl ItemComponent for ItemArmorComponent {
+    fn serialize(&self) -> String {
+        let value = self.protection;
+        let val: String = ItemArmorComponentTemplate { protection: value }
+            .render()
+            .unwrap();
+        val
+    }
+}
+
+// * ItemRenderOffsetsComponent
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/render_offsets.json.jinja2",
+    escape = "none"
+)]
+struct ItemRenderOffsetsComponentTemplate<'a> {
+    value: &'a str,
+}
+pub struct ItemRenderOffsetsComponent<'a> {
+    value: &'a str,
+}
+impl<'a> ItemComponent for ItemRenderOffsetsComponent<'a> {
+    fn serialize(&self) -> String {
+        let value = self.value;
+        let val: String = ItemRenderOffsetsComponentTemplate { value }
+            .render()
+            .unwrap();
+        val
+    }
+}

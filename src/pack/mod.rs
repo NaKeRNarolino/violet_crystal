@@ -2,7 +2,7 @@ use std::fs;
 
 use askama::Template;
 
-use crate::item::item_registry::{serialize_item_atlas, ItemAtlasEntry};
+use crate::item::item_registry::serialize_item_atlas;
 use crate::item::ItemAtlasTemplate;
 use crate::item::{item_registry::ItemRegistry, Item};
 use crate::logger::info;
