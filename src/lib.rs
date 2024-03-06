@@ -31,6 +31,9 @@ mod tests {
             "1, 0, 0",
             "Nothing here".to_string(),
             true,
+            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_behavior_packs",
+            "",
+            r"C:\Users\User\newgito\bluestone.png",
             &scripts,
         );
 
@@ -59,5 +62,6 @@ mod tests {
         });
 
         pack.generate(Some(true));
+        pack.build_to_dev();
     }
 }

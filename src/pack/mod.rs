@@ -1,6 +1,7 @@
 use std::fs;
 
 use askama::Template;
+use fs_extra::dir;
 
 use crate::item::item_registry::serialize_item_atlas;
 use crate::item::ItemAtlasTemplate;
@@ -23,6 +24,9 @@ pub struct Pack<'a> {
     pub description: String,
     pub use_scripts: bool,
     pub scripts: &'a Option<ScriptData>,
+    pub dev_bp_folder: &'a str,
+    pub dev_rp_folder: &'a str,
+    pub icon: &'a str,
     pub item_registry: ItemRegistry<'a>,
 }
 
@@ -34,6 +38,9 @@ impl<'a> Pack<'a> {
         version: &'a str,
         description: String,
         use_scripts: bool,
+        dev_bp_folder: &'a str,
+        dev_rp_folder: &'a str,
+        icon: &'a str,
         scripts: &'a Option<ScriptData>,
     ) -> Self {
         info(
@@ -49,6 +56,9 @@ impl<'a> Pack<'a> {
             description,
             scripts,
             use_scripts,
+            dev_bp_folder,
+            dev_rp_folder,
+            icon,
             item_registry: items.clone(),
         };
         pack
@@ -130,6 +140,22 @@ impl<'a> Pack<'a> {
                 Err(_) => (),
             };
         }
+
+        let _ = fs::copy(
+            &self.icon,
+            format!(
+                "./violet_crystal_results/packs/{}/BP/pack_icon.png",
+                &self.id
+            ),
+        );
+
+        let _ = fs::copy(
+            &self.icon,
+            format!(
+                "./violet_crystal_results/packs/{}/RP/pack_icon.png",
+                &self.id
+            ),
+        );
 
         self.generate_items();
     }
@@ -219,5 +245,29 @@ impl<'a> Pack<'a> {
             Ok(_) => "Ok!",
             Err(_) => "Err!",
         };
+    }
+
+    pub fn build_to_dev(&self) {
+        let _ = fs::create_dir_all(format!("{}/{}_BP", &self.dev_bp_folder, &self.id));
+        let _ = fs::create_dir_all(format!("{}/{}_RP", &self.dev_rp_folder, &self.id));
+
+        info(
+            format!("Copying {}'s BP to DevBPFolder", &self.id),
+            "[ PACK ]".to_string(),
+        );
+        let _ = fs_extra::dir::copy(
+            format!("./violet_crystal_results/packs/{}/BP/", &self.id),
+            format!("{}/{}_BP/", &self.dev_bp_folder, &self.id),
+            &dir::CopyOptions::new().content_only(true).overwrite(true),
+        );
+        info(
+            format!("Copying {}'s RP to DevRPFolder", &self.id),
+            "[ PACK ]".to_string(),
+        );
+        let _ = fs_extra::dir::copy(
+            format!("./violet_crystal_results/packs/{}/RP/", &self.id),
+            format!("{}/{}_RP/", &self.dev_rp_folder, &self.id),
+            &dir::CopyOptions::new().content_only(true).overwrite(true),
+        );
     }
 }

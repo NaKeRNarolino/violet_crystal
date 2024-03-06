@@ -10,13 +10,13 @@
     "name": "Test",
     "description": "Nothing here",
     "min_engine_version": [1, 20, 50],
-    "uuid": "221dc24b-e1e6-424b-b439-e081bdd77f96",
+    "uuid": "68b20af5-23e8-47eb-93fb-29151102df08",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "resources",
-      "uuid": "08cdea4c-498e-45a8-a7e3-48fe32130d09",
+      "uuid": "f9c982b9-40d6-4677-bae8-966346a3ab20",
       "version": [1, 0, 0]
     }
   ]
