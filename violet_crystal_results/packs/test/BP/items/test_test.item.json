@@ -11,7 +11,23 @@
       "minecraft:display_name": {
         "value": "Test"
       },
-      "minecraft:icon": "test:test"
+      "minecraft:icon": "test_test",
+      "minecraft:fuel": {
+        "duration": 10
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "minecraft:stick"
+            ],
+            "repair_amount": "10"
+          }
+        ]
+      },
+      "minecraft:custom_components": [
+        "vc:custom_components"
+      ]
     }
   }
 }

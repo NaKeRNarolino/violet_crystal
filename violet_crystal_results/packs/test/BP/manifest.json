@@ -7,19 +7,19 @@
     "name": "Test",
     "description": "Nothing here",
     "min_engine_version": [1, 20, 40],
-    "uuid": "43ee1c69-4e7e-4920-b1cb-3f5553945f8b",
+    "uuid": "67a79beb-9494-49ab-9c1d-f65861230d38",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "data",
-      "uuid": "109b81d3-4a03-4836-a6fa-4bbfbf08e47c",
+      "uuid": "cfd1f700-4249-4bba-ae8a-bb1fdd1e53f3",
       "version": [1, 0, 0]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "aca11444-4641-4c72-8c35-c9792e571ef7",
+      "uuid": "0f08abe4-3f7f-4340-b37b-058adcabcddf",
       "entry": "scripts/main.js",
       "version": [1, 0, 0]
     }

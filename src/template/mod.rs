@@ -12,6 +12,7 @@ pub struct BpManifestTemplate<'a> {
     pub use_scripts: &'a bool,
     pub server_version: &'a str,
     pub server_ui_version: &'a str,
+    pub version: &'a str,
 }
 
 #[derive(Template)]
@@ -22,4 +23,5 @@ pub struct RpManifestTemplate<'a> {
     pub description: &'a str,
     pub uuid_1: &'a str,
     pub uuid_2: &'a str,
+    pub version: &'a str,
 }

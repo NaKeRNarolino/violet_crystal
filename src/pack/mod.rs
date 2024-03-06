@@ -19,7 +19,7 @@ pub struct Pack<'a> {
     pub name: String,
     pub id: String,
     pub author: String,
-    pub version: Vec<String>,
+    pub version: &'a str,
     pub description: String,
     pub use_scripts: bool,
     pub scripts: &'a Option<ScriptData>,
@@ -31,7 +31,7 @@ impl<'a> Pack<'a> {
         name: String,
         id: String,
         author: String,
-        version: Vec<String>,
+        version: &'a str,
         description: String,
         use_scripts: bool,
         scripts: &'a Option<ScriptData>,
@@ -83,6 +83,7 @@ impl<'a> Pack<'a> {
                     Some(scripts) => scripts.mc_server_version.as_str(),
                     None => "0.0.0",
                 },
+                version: &self.version,
             }
             .render()
             .unwrap();
@@ -103,6 +104,7 @@ impl<'a> Pack<'a> {
                 description: &self.description.as_str(),
                 uuid_1: Uuid::new_v4().to_string().as_str(),
                 uuid_2: Uuid::new_v4().to_string().as_str(),
+                version: &self.version,
             }
             .render()
             .unwrap();

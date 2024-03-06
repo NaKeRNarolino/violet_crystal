@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use askama::Template;
 
 pub trait ItemComponent {
@@ -200,7 +202,7 @@ struct ItemArmorComponentTemplate {
     protection: i32,
 }
 pub struct ItemArmorComponent {
-    protection: i32,
+    pub protection: i32,
 }
 impl ItemComponent for ItemArmorComponent {
     fn serialize(&self) -> String {
@@ -222,12 +224,117 @@ struct ItemRenderOffsetsComponentTemplate<'a> {
     value: &'a str,
 }
 pub struct ItemRenderOffsetsComponent<'a> {
-    value: &'a str,
+    pub value: &'a str,
 }
 impl<'a> ItemComponent for ItemRenderOffsetsComponent<'a> {
     fn serialize(&self) -> String {
         let value = self.value;
         let val: String = ItemRenderOffsetsComponentTemplate { value }
+            .render()
+            .unwrap();
+        val
+    }
+}
+
+// * ItemCreativeCategoryComponent
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/creative_category.json.jinja2",
+    escape = "none"
+)]
+struct ItemCreativeCategoryComponentTemplate<'a> {
+    parent: &'a str,
+}
+pub struct ItemCreativeCategoryComponent<'a> {
+    pub parent: &'a str,
+}
+impl<'a> ItemComponent for ItemCreativeCategoryComponent<'a> {
+    fn serialize(&self) -> String {
+        let parent = self.parent;
+        let val: String = ItemCreativeCategoryComponentTemplate { parent }
+            .render()
+            .unwrap();
+        val
+    }
+}
+
+// * ItemRepairableComponent
+
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/item_repair_entry.json.jinja2",
+    escape = "none"
+)]
+struct ItemRepairEntryTemplate<'a> {
+    items: String,
+    amount: &'a String,
+}
+
+pub struct ItemRepairEntry<'a> {
+    pub items: Vec<&'a str>,
+    pub amount: String,
+}
+impl<'a> ItemRepairEntry<'a> {
+    pub fn serialize(&self) -> String {
+        let items = format!("{:?}", self.items);
+        let amount = &self.amount;
+        let val: String = ItemRepairEntryTemplate { items, amount }.render().unwrap();
+        val
+    }
+}
+
+fn serialize_item_repairable_entries(repair_entries: &Vec<ItemRepairEntry>) -> String {
+    let mut serialized_entries = String::new();
+    for entry in repair_entries {
+        serialized_entries.push_str(&entry.serialize());
+        serialized_entries.push_str(",");
+    }
+    serialized_entries.pop();
+    serialized_entries
+}
+
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/repairable.json.jinja2",
+    escape = "none"
+)]
+struct ItemRepairableComponentTemplate {
+    repair_entries: String,
+}
+pub struct ItemRepairableComponent<'a> {
+    pub repair_entries: Vec<ItemRepairEntry<'a>>,
+}
+impl<'a> ItemComponent for ItemRepairableComponent<'a> {
+    fn serialize(&self) -> String {
+        let repair_entries = &self.repair_entries;
+        let val: String = ItemRepairableComponentTemplate {
+            repair_entries: serialize_item_repairable_entries(repair_entries),
+        }
+        .render()
+        .unwrap();
+        val
+    }
+}
+
+// ItemCustomComponents
+
+#[derive(Template)]
+#[template(
+    path = "item_serialization/components/custom_components.json.jinja2",
+    escape = "none"
+)]
+pub struct ItemCustomComponentsTemplate {
+    pub components: String,
+}
+
+pub struct ItemCustomComponents<'a> {
+    pub components: Vec<&'a str>,
+}
+
+impl<'a> ItemComponent for ItemCustomComponents<'a> {
+    fn serialize(&self) -> String {
+        let components = format!("{:?}", self.components);
+        let val: String = ItemCustomComponentsTemplate { components }
             .render()
             .unwrap();
         val

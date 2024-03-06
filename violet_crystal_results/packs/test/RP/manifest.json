@@ -3,20 +3,20 @@
   "metadata": {
     "authors": ["NaKeR"],
     "generated_with": {
-        "violetrs": ["1.0.0"]
+        "violet-crystal-rs": ["1.0.0"]
     }
   },
   "header": {
     "name": "Test",
     "description": "Nothing here",
     "min_engine_version": [1, 20, 50],
-    "uuid": "c84a22c7-1cf7-4c98-9005-6238bfb05f15",
+    "uuid": "221dc24b-e1e6-424b-b439-e081bdd77f96",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "resources",
-      "uuid": "ca608cbb-fe19-44eb-aece-0acd1db03ce7",
+      "uuid": "08cdea4c-498e-45a8-a7e3-48fe32130d09",
       "version": [1, 0, 0]
     }
   ]
