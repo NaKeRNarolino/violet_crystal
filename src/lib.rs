@@ -9,9 +9,8 @@ mod tests {
     use crate::{
         item::{
             component::{
-                ItemCustomComponents, ItemDamageComponent, ItemDisplayNameComponent,
-                ItemDurabilityComponent, ItemFuelComponent, ItemIconComponent, ItemRepairEntry,
-                ItemRepairableComponent,
+                ItemDamageComponent, ItemDisplayNameComponent, ItemFuelComponent,
+                ItemIconComponent, ItemRepairEntry, ItemRepairableComponent,
             },
             Item,
         },
@@ -23,16 +22,17 @@ mod tests {
         let scripts = Some(ScriptData {
             mc_server_ui_version: "1.2.0-beta".to_string(),
             mc_server_version: "1.9.0-beta".to_string(),
+            paired_scripts_folder: r"./src-scripts",
         });
         let mut pack = Pack::new(
-            "Test".to_string(),
-            "test".to_string(),
+            "TestThird".to_string(),
+            "testThird".to_string(),
             "NaKeR".to_string(),
             "1, 0, 0",
             "Nothing here".to_string(),
             true,
             r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_behavior_packs",
-            "",
+            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_resource_packs",
             r"C:\Users\User\newgito\bluestone.png",
             &scripts,
         );
@@ -42,9 +42,6 @@ mod tests {
                 items: vec!["minecraft:stick"],
                 amount: "10".to_string(),
             }],
-        };
-        let binding = ItemCustomComponents {
-            components: vec!["vc:custom_components"],
         };
         pack.register_item(Item {
             type_id: "test:test".to_string(),
@@ -57,7 +54,6 @@ mod tests {
                 },
                 &ItemFuelComponent { duration: 10 },
                 &item_repairable,
-                &binding,
             ],
         });
 

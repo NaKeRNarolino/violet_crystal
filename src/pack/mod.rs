@@ -11,9 +11,10 @@ use crate::template::{BpManifestTemplate, RpManifestTemplate};
 
 use uuid::Uuid;
 
-pub struct ScriptData {
+pub struct ScriptData<'a> {
     pub mc_server_version: String,
     pub mc_server_ui_version: String,
+    pub paired_scripts_folder: &'a str,
 }
 
 pub struct Pack<'a> {
@@ -23,7 +24,7 @@ pub struct Pack<'a> {
     pub version: &'a str,
     pub description: String,
     pub use_scripts: bool,
-    pub scripts: &'a Option<ScriptData>,
+    pub scripts: &'a Option<ScriptData<'a>>,
     pub dev_bp_folder: &'a str,
     pub dev_rp_folder: &'a str,
     pub icon: &'a str,
@@ -157,6 +158,10 @@ impl<'a> Pack<'a> {
             ),
         );
 
+        if self.use_scripts {
+            self.pair_scripts();
+        }
+
         self.generate_items();
     }
 
@@ -269,5 +274,24 @@ impl<'a> Pack<'a> {
             format!("{}/{}_RP/", &self.dev_rp_folder, &self.id),
             &dir::CopyOptions::new().content_only(true).overwrite(true),
         );
+    }
+
+    pub fn pair_scripts(&self) {
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/BP/scripts/",
+            &self.id
+        ));
+        let path = self.scripts.as_ref().unwrap().paired_scripts_folder;
+        let _ = fs_extra::dir::copy(
+            path,
+            format!("./violet_crystal_results/packs/{}/BP/scripts/", &self.id),
+            &fs_extra::dir::CopyOptions::new()
+                .overwrite(true)
+                .content_only(true),
+        );
+        info(
+            format!("Paired scripts from folder {}", path),
+            "[ SCRIPTS ]".to_string(),
+        )
     }
 }

@@ -4,27 +4,26 @@
     "authors": ["NaKeR"]
   },
   "header": {
-    "name": "Test",
+    "name": "TestThird",
     "description": "Nothing here",
     "min_engine_version": [1, 20, 40],
-    "uuid": "26449566-5d49-4700-9bc3-3457cc53c7ed",
+    "uuid": "5b2d242a-70b3-41d7-bd3f-eb7148ad705a",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "data",
-      "uuid": "ae19c714-a674-4d8d-bd2b-bc789749b5f9",
+      "uuid": "f2f0a923-0419-4b92-8853-d179073a3216",
       "version": [1, 0, 0]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "f38dfa12-6717-4e24-ad08-e5673e57a822",
+      "uuid": "f2699d36-7a8c-498c-ae0d-f62df87d0b7b",
       "entry": "scripts/main.js",
       "version": [1, 0, 0]
     }
   ],
-   
   "dependencies": [
     {
       "module_name": "@minecraft/server",
