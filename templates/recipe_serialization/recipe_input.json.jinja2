@@ -1,0 +1,11 @@
+{% if has_key %}"{{ key }}": {% endif %}{
+    {% if use_tag %}
+    "tag": {{tag}},
+    {% else %}
+    "item": "{{item}}",
+    "data": {{data}}
+    {% endif %}
+    {% if has_count %},
+    "count": {{count}}
+    {% endif %}
+}

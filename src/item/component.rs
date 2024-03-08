@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 use askama::Template;
 
 pub trait ItemComponent {

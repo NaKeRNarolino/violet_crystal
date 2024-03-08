@@ -1,5 +1,6 @@
 use std::fs;
 
+use crate::recipe::Recipe;
 use askama::Template;
 use fs_extra::dir;
 
@@ -29,6 +30,7 @@ pub struct Pack<'a> {
     pub dev_rp_folder: &'a str,
     pub icon: &'a str,
     pub item_registry: ItemRegistry<'a>,
+    pub recipes: Vec<&'a dyn Recipe>,
 }
 
 impl<'a> Pack<'a> {
@@ -61,6 +63,7 @@ impl<'a> Pack<'a> {
             dev_rp_folder,
             icon,
             item_registry: items.clone(),
+            recipes: Vec::new(),
         };
         pack
     }
@@ -163,6 +166,15 @@ impl<'a> Pack<'a> {
         }
 
         self.generate_items();
+        self.generate_recipes();
+    }
+
+    pub fn register_recipe<'b>(&mut self, recipe: &'a dyn Recipe) {
+        self.recipes.push(recipe);
+        info(
+            format!("Registering recipe {}", recipe.id()),
+            "[ RECIPE ]".to_string(),
+        );
     }
 
     pub fn register_item(&mut self, item: Item<'a>) {
@@ -293,5 +305,37 @@ impl<'a> Pack<'a> {
             format!("Paired scripts from folder {}", path),
             "[ SCRIPTS ]".to_string(),
         )
+    }
+
+    fn generate_recipes(&self) {
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/BP/recipes/",
+            &self.id
+        ));
+        let iterator: &Vec<&dyn Recipe> = self.recipes.as_ref();
+        for recipe in iterator {
+            info(
+                format!("Generating Recipe \"{}\"", &recipe.id()),
+                "[ RECIPE ]".to_string(),
+            );
+            let file_name: String = recipe
+                .id()
+                .chars()
+                .into_iter()
+                .map(|el| if el == ':' { '_' } else { el })
+                .collect();
+            let content = recipe.serialize();
+            let pretty_content = jsonxf::pretty_print(&content).unwrap();
+            let _ = match fs::write(
+                format!(
+                    "./violet_crystal_results/packs/{}/BP/recipes/{}.recipe.json",
+                    &self.id, &file_name
+                ),
+                pretty_content,
+            ) {
+                Ok(_) => "Ok!",
+                Err(_) => "Err!",
+            };
+        }
     }
 }

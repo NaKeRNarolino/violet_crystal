@@ -7,19 +7,19 @@
     "name": "TestThird",
     "description": "Nothing here",
     "min_engine_version": [1, 20, 40],
-    "uuid": "5b2d242a-70b3-41d7-bd3f-eb7148ad705a",
+    "uuid": "a4d41a61-6cb6-4e62-bb4f-df36056abcae",
     "version": [1, 0, 0]
   },
   "modules": [
     {
       "type": "data",
-      "uuid": "f2f0a923-0419-4b92-8853-d179073a3216",
+      "uuid": "1116869a-44e0-4df7-b59d-77a561ddd40b",
       "version": [1, 0, 0]
     },
     {
       "type": "script",
       "language": "javascript",
-      "uuid": "f2699d36-7a8c-498c-ae0d-f62df87d0b7b",
+      "uuid": "04225676-573b-4590-b16e-486fcaac1db9",
       "entry": "scripts/main.js",
       "version": [1, 0, 0]
     }

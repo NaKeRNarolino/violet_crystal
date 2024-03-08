@@ -2,6 +2,7 @@ pub mod constant;
 pub mod item;
 pub mod logger;
 pub mod pack;
+pub mod recipe;
 pub mod template;
 
 #[cfg(test)]
@@ -15,6 +16,7 @@ mod tests {
             Item,
         },
         pack::{Pack, ScriptData},
+        recipe::{FurnaceRecipe, RecipeInputOrOutput},
     };
 
     #[test]
@@ -43,6 +45,7 @@ mod tests {
                 amount: "10".to_string(),
             }],
         };
+
         pack.register_item(Item {
             type_id: "test:test".to_string(),
             texture: r"C:\Users\User\newgito\bluestone.png".to_string(),
@@ -57,7 +60,23 @@ mod tests {
             ],
         });
 
-        pack.generate(Some(true));
+        let test_item_recipe = FurnaceRecipe {
+            id: "test:test_recipe",
+            tags: vec!["furnace"],
+            input: RecipeInputOrOutput {
+                use_tag: false,
+                item: Some("minecraft:stick"),
+                count: None,
+                data: None,
+                tag: None,
+                key: None,
+            },
+            output: "test:test",
+        };
+
+        pack.register_recipe(&test_item_recipe);
+
+        pack.generate(Some(false));
         pack.build_to_dev();
     }
 }
