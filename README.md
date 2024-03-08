@@ -16,5 +16,6 @@
 - Recipes, done:
   - Shapeless
   - Furnace
+  - Shaped
 
 I started this project only to learn Rust, but I'll be really happy if someone would actually use it.
