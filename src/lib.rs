@@ -16,7 +16,7 @@ mod tests {
             Item,
         },
         pack::{Pack, ScriptData},
-        recipe::{FurnaceRecipe, RecipeInputOrOutput, ShapelessRecipe},
+        recipe::{FurnaceRecipe, RecipeInputOrOutput, ShapedRecipe, ShapelessRecipe},
     };
 
     #[test]
@@ -104,9 +104,31 @@ mod tests {
                 key: None,
             },
         };
+        let test_item_shaped_recipe = ShapedRecipe {
+            id: "test:test_shaped",
+            tags: vec!["crafting_table"],
+            pattern: vec!["#  ", " # ", "  #"],
+            ingredients: vec![RecipeInputOrOutput {
+                use_tag: false,
+                key: Some("#"),
+                item: Some("amethyst_shard"),
+                data: Some(0),
+                count: None,
+                tag: None,
+            }],
+            result: RecipeInputOrOutput {
+                use_tag: false,
+                item: Some("test:test"),
+                count: Some(6),
+                data: Some(0),
+                tag: None,
+                key: None,
+            },
+        };
 
         pack.register_recipe(&test_item_recipe);
         pack.register_recipe(&test_item_shapeless_recipe);
+        pack.register_recipe(&test_item_shaped_recipe);
 
         pack.generate(Some(false));
         pack.build_to_dev();

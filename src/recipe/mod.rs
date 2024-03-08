@@ -141,3 +141,44 @@ struct ShapelessRecipeTemplate {
     ingredients: String,
     result: String,
 }
+
+// * ShapedRecipe
+
+pub struct ShapedRecipe<'a> {
+    pub id: &'a str,
+    pub tags: Vec<&'a str>,
+    pub ingredients: Vec<RecipeInputOrOutput<'a>>,
+    pub result: RecipeInputOrOutput<'a>,
+    pub pattern: Vec<&'a str>,
+}
+
+impl<'a> Recipe for ShapedRecipe<'a> {
+    fn serialize(&self) -> String {
+        let ingredients: &Vec<RecipeInputOrOutput> = self.ingredients.as_ref();
+        ShapedRecipeTemplate {
+            id: self.id.to_string(),
+            tags: format!("{:?}", self.tags),
+            ingredients: serialize_ingredients(ingredients),
+            result: self.result.serialize(),
+            pattern: format!("{:?}", self.pattern),
+        }
+        .render()
+        .unwrap()
+    }
+    fn id(&self) -> String {
+        self.id.to_string()
+    }
+}
+
+#[derive(Template)]
+#[template(
+    path = "recipe_serialization/shaped_recipe.json.jinja2",
+    escape = "none"
+)]
+struct ShapedRecipeTemplate {
+    id: String,
+    tags: String,
+    ingredients: String,
+    result: String,
+    pattern: String,
+}

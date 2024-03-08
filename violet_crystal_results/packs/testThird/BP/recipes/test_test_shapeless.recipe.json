@@ -4,7 +4,9 @@
     "description": {
       "identifier": "test:test_shapeless"
     },
-    "tags": ["crafting_table"],
+    "tags": [
+      "crafting_table"
+    ],
     "ingredients": [
       {
         "item": "minecraft:bread",
