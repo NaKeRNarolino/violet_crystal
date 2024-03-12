@@ -1,3 +1,4 @@
+pub mod block;
 pub mod constant;
 pub mod item;
 pub mod logger;
