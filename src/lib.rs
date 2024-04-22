@@ -5,14 +5,15 @@ pub mod logger;
 pub mod pack;
 pub mod recipe;
 pub mod template;
+pub mod vio;
 
 #[cfg(test)]
 mod tests {
     use crate::{
         item::{
             component::{
-                ItemDamageComponent, ItemDisplayNameComponent, ItemFuelComponent,
-                ItemIconComponent, ItemRepairEntry, ItemRepairableComponent,
+                ItemAllowOffHandComponent, ItemDamageComponent, ItemDisplayNameComponent,
+                ItemFuelComponent, ItemIconComponent, ItemRepairEntry, ItemRepairableComponent,
             },
             Item,
         },
@@ -58,6 +59,7 @@ mod tests {
                 },
                 &ItemFuelComponent { duration: 10 },
                 &item_repairable,
+                &ItemAllowOffHandComponent { value: true },
             ],
         });
 

@@ -1,3 +1,7 @@
+use askama::Template;
+
+use crate::vio::Vec3;
+
 pub trait BlockComponent {
     fn serialize(&self) -> String;
 }
@@ -5,9 +9,51 @@ pub trait BlockComponent {
 // * BlockCollisionBoxComponent
 
 pub struct BlockCollisionBoxComponent {
-    enabled: bool,
-    origin: Option<Vec<i32>>,
-    size: Option<Vec<i32>>,
+    pub enabled: bool,
+    pub origin: Option<Vec3>,
+    pub size: Option<Vec3>,
 }
 
-impl BlockComponent for BlockCollisionBoxComponent {}
+#[derive(Template)]
+#[template(
+    path = "block_serialization/components/collision_box.json.jinja2",
+    escape = "none"
+)]
+struct BlockCollisionBoxComponentTemplate {
+    pub enabled: bool,
+    pub origin: String,
+    pub size: String,
+}
+
+impl BlockComponent for BlockCollisionBoxComponent {
+    fn serialize(&self) -> String {
+        let enabled = self.enabled;
+        let orgn = self.origin.unwrap_or(Vec3 {
+            x: -1,
+            y: -1,
+            z: -1,
+        });
+        let sz = self.size.unwrap_or(Vec3 {
+            x: -1,
+            y: -1,
+            z: -1,
+        });
+        let origin = if orgn.x != -1 {
+            format!("[{}, {}, {}]", orgn.x, orgn.y, orgn.z)
+        } else {
+            "[]".to_string()
+        };
+        let size = if sz.x != -1 {
+            format!("[{}, {}, {}]", sz.x, sz.y, sz.z)
+        } else {
+            "[]".to_string()
+        };
+        return BlockCollisionBoxComponentTemplate {
+            enabled,
+            origin,
+            size,
+        }
+        .render()
+        .unwrap();
+    }
+}
