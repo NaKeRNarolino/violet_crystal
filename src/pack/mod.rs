@@ -11,6 +11,8 @@ use crate::logger::info;
 use crate::template::{BpManifestTemplate, RpManifestTemplate};
 
 use uuid::Uuid;
+use crate::block::Block;
+use crate::block::block_registry::{BlockAtlasEntry, BlockAtlasTemplate, BlockRegistry, serialize_block_atlas, serialize_terrain_atlas};
 
 pub struct ScriptData<'a> {
     pub mc_server_version: String,
@@ -31,6 +33,7 @@ pub struct Pack<'a> {
     pub icon: &'a str,
     pub item_registry: ItemRegistry<'a>,
     pub recipes: Vec<&'a dyn Recipe>,
+    pub block_registry: BlockRegistry<'a>
 }
 
 impl<'a> Pack<'a> {
@@ -64,6 +67,7 @@ impl<'a> Pack<'a> {
             icon,
             item_registry: items.clone(),
             recipes: Vec::new(),
+            block_registry: BlockRegistry::new()
         };
         pack
     }
@@ -166,6 +170,7 @@ impl<'a> Pack<'a> {
         }
 
         self.generate_items();
+        self.generate_blocks();
         self.generate_recipes();
     }
 
@@ -337,5 +342,112 @@ impl<'a> Pack<'a> {
                 Err(_) => "Err!",
             };
         }
+    }
+
+    fn generate_blocks(&mut self) {
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/BP/blocks/",
+            &self.id
+        ));
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/RP/textures/",
+            &self.id
+        ));
+
+        let itreg = self.block_registry.clone();
+
+        for block in self.block_registry.blocks.iter() {
+            extern crate jsonxf;
+            info(
+                format!("Generating Block \"{}\"", &block.type_id),
+                "[ BLOCK ]".to_string(),
+            );
+            let file_name: String = block
+                .type_id
+                .chars()
+                .into_iter()
+                .map(|el| if el == ':' { '_' } else { el })
+                .collect();
+            let content = block.serialize();
+            let pretty_content = jsonxf::pretty_print(&content).unwrap();
+            let _ = match fs::write(
+                format!(
+                    "./violet_crystal_results/packs/{}/BP/blocks/{}.block.json",
+                    &self.id, &file_name
+                ),
+                pretty_content,
+            ) {
+                Ok(_) => "Ok!",
+                Err(_) => "Err!",
+            };
+            let _ = fs::create_dir_all(format!(
+                "./violet_crystal_results/packs/{}/RP/textures/blocks",
+                &self.id
+            ));
+            let _ = match fs::copy(
+                block.clone().texture_set,
+                format!(
+                    "./violet_crystal_results/packs/{}/RP/textures/blocks/{}.png",
+                    &self.id, &file_name
+                ),
+            ) {
+                Ok(_) => "Ok!",
+                Err(_) => "Err!",
+            };
+        }
+
+        self.generate_block_atlas();
+        self.generate_terrain_atlas();
+    }
+
+    fn generate_block_atlas(&self) {
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/RP/textures/blocks",
+            &self.id
+        ));
+        let content_raw = BlockAtlasTemplate {
+            content: serialize_block_atlas(&self.block_registry.block_atlas),
+        }
+            .render()
+            .unwrap();
+        let content = jsonxf::pretty_print(content_raw.as_str()).unwrap();
+        let _ = match fs::write(
+            format!(
+                "./violet_crystal_results/packs/{}/RP/blocks.json",
+                &self.id
+            ),
+            content,
+        ) {
+            Ok(_) => "Ok!",
+            Err(_) => "Err!",
+        };
+    }
+
+    fn generate_terrain_atlas(&self) {
+        let _ = fs::create_dir_all(format!(
+            "./violet_crystal_results/packs/{}/RP/textures/",
+            &self.id
+        ));
+        let content_raw = BlockAtlasTemplate {
+            content: serialize_terrain_atlas(&self.block_registry.terrain_atlas),
+        }
+            .render()
+            .unwrap();
+        let content = jsonxf::pretty_print(content_raw.as_str()).unwrap();
+        let _ = match fs::write(
+            format!(
+                "./violet_crystal_results/packs/{}/RP/textures/terrain_texture.json",
+                &self.id
+            ),
+            content,
+        ) {
+            Ok(_) => "Ok!",
+            Err(_) => "Err!",
+        };
+    }
+
+    pub fn register_block(&mut self, block: Block<'a>) {
+        self.block_registry.add_block(block.clone());
+        info(format!("Registering block {}", block.type_id), "[ BLOCK ]".to_string());
     }
 }

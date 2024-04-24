@@ -24,6 +24,9 @@
             "repair_amount": "10"
           }
         ]
+      },
+      "minecraft:allow_off_hand": {
+        "value": "true"
       }
     }
   }

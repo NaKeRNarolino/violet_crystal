@@ -1,0 +1,10 @@
+{
+  "format_version": [
+    1,
+    1,
+    0
+  ],
+  "amex_test": {
+    "textures": "textures/blocks/amex_test"
+  }
+}

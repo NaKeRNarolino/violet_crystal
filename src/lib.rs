@@ -20,6 +20,9 @@ mod tests {
         pack::{Pack, ScriptData},
         recipe::{FurnaceRecipe, RecipeInputOrOutput, ShapedRecipe, ShapelessRecipe},
     };
+    use crate::block::Block;
+    use crate::block::component::BlockCollisionBoxComponent;
+    use crate::vio::Vec3;
 
     #[test]
     fn main() {
@@ -132,6 +135,23 @@ mod tests {
         pack.register_recipe(&test_item_recipe);
         pack.register_recipe(&test_item_shapeless_recipe);
         pack.register_recipe(&test_item_shaped_recipe);
+
+        pack.register_block(Block {
+            type_id: "amex:test".to_string(),
+            components: vec![
+                &BlockCollisionBoxComponent {
+                    origin: Some(Vec3 {
+                        x: 0, y: 0, z: 0
+                    }),
+                    size: Some(Vec3 {
+                        x: 16, y: 16, z: 16
+                    }),
+                    enabled: true
+                }
+            ],
+            texture_set: r"C:\Users\User\OneDrive\Рабочий стол\chipped_be\i2bdata\acacia_crate_top.png".to_string(),
+            sound: "stone".to_string(),
+        });
 
         pack.generate(Some(false));
         pack.build_to_dev();

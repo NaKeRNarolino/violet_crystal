@@ -4,18 +4,15 @@
 
 ### Avaiable features:
 - Pack generation
-- Item creation (all of the components are there!)
+- Item creation (all the components are there!)
 - Script support (pairing a folder with js scripts with the pack)
+- Recipes
 
 ### Plans:
-- Blocks;
 - Entities;
 - Animation / Render controllers;
 
 ### Progress:
-- Recipes, done:
-  - Shapeless
-  - Furnace
-  - Shaped
+- Blocks
 
-I started this project only to learn Rust, but I'll be really happy if someone would actually use it.
+*I started this project only to learn Rust, but I'll be really happy if someone would actually use it.* 😊
