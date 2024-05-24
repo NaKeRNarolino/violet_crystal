@@ -1,15 +1,15 @@
 use std::sync::Mutex;
 
 use askama::Template;
+use crate::vio::Identifier;
 
 pub mod component;
 pub mod item_registry;
 
 #[derive(Clone)]
 pub struct Item<'a> {
-    pub type_id: String,
+    pub type_id: Identifier<'a>,
     pub components: Vec<&'a dyn component::ItemComponent>,
-    pub texture: String,
 }
 impl<'a> Item<'a> {
     pub fn serialize(&self) -> String {
@@ -27,7 +27,7 @@ impl<'a> Item<'a> {
         }
         components_strings.last_mut().unwrap().pop();
         ItemTemplate {
-            id: &self.type_id,
+            id: &self.type_id.render(),
             components: components_strings,
         }
         .render()

@@ -4,7 +4,7 @@ use crate::recipe::Recipe;
 use askama::Template;
 use fs_extra::dir;
 
-use crate::item::item_registry::serialize_item_atlas;
+use crate::item::item_registry::{ItemAtlasEntry, serialize_item_atlas};
 use crate::item::ItemAtlasTemplate;
 use crate::item::{item_registry::ItemRegistry, Item};
 use crate::logger::info;
@@ -185,9 +185,17 @@ impl<'a> Pack<'a> {
     pub fn register_item(&mut self, item: Item<'a>) {
         self.item_registry.add_item(item.clone());
         info(
-            format!("Registering Item \"{}\"", &item.type_id),
+            format!("Registering Item \"{}\"", &item.type_id.render()),
             "[ ITEM ]".to_string(),
         );
+    }
+
+    pub fn register_item_texture(&mut self, texture: ItemAtlasEntry) {
+        info(
+            format!("Registering Item Texture \"{}\"", texture.clone().texture_name),
+            "[ ITEM ][ TEXTURE ]".to_string(),
+        );
+        self.item_registry.add_texture(texture);
     }
 
     fn generate_items(&mut self) {
@@ -205,11 +213,11 @@ impl<'a> Pack<'a> {
         for item in itreg.items {
             extern crate jsonxf;
             info(
-                format!("Generating Item \"{}\"", &item.type_id),
+                format!("Generating Item \"{}\"", &item.type_id.render()),
                 "[ ITEM ]".to_string(),
             );
             let file_name: String = item
-                .type_id
+                .type_id.render()
                 .chars()
                 .into_iter()
                 .map(|el| if el == ':' { '_' } else { el })
@@ -230,16 +238,7 @@ impl<'a> Pack<'a> {
                 "./violet_crystal_results/packs/{}/RP/textures/items",
                 &self.id
             ));
-            let _ = match fs::copy(
-                item.texture,
-                format!(
-                    "./violet_crystal_results/packs/{}/RP/textures/items/{}.png",
-                    &self.id, &file_name
-                ),
-            ) {
-                Ok(_) => "Ok!",
-                Err(_) => "Err!",
-            };
+            
         }
 
         self.generate_item_atlas();
@@ -256,6 +255,19 @@ impl<'a> Pack<'a> {
         }
         .render()
         .unwrap();
+        for entry in &self.item_registry.item_atlas {
+            let file_name: String = entry.clone().texture_name;
+            let _ = match fs::copy(
+                &entry.path,
+                format!(
+                    "./violet_crystal_results/packs/{}/RP/textures/items/{}.png",
+                    &self.id, &file_name
+                ),
+            ) {
+                Ok(_) => "Ok!",
+                Err(_) => "Err!",
+            };
+        }
         let content = jsonxf::pretty_print(content_raw.as_str()).unwrap();
         let _ = match fs::write(
             format!(
@@ -359,11 +371,11 @@ impl<'a> Pack<'a> {
         for block in self.block_registry.blocks.iter() {
             extern crate jsonxf;
             info(
-                format!("Generating Block \"{}\"", &block.type_id),
+                format!("Generating Block \"{}\"", &block.type_id.render()),
                 "[ BLOCK ]".to_string(),
             );
             let file_name: String = block
-                .type_id
+                .type_id.render()
                 .chars()
                 .into_iter()
                 .map(|el| if el == ':' { '_' } else { el })
@@ -435,6 +447,7 @@ impl<'a> Pack<'a> {
             .unwrap();
         let content = jsonxf::pretty_print(content_raw.as_str()).unwrap();
         let _ = match fs::write(
+            
             format!(
                 "./violet_crystal_results/packs/{}/RP/textures/terrain_texture.json",
                 &self.id
@@ -448,6 +461,6 @@ impl<'a> Pack<'a> {
 
     pub fn register_block(&mut self, block: Block<'a>) {
         self.block_registry.add_block(block.clone());
-        info(format!("Registering block {}", block.type_id), "[ BLOCK ]".to_string());
+        info(format!("Registering block {}", block.type_id.render()), "[ BLOCK ]".to_string());
     }
 }

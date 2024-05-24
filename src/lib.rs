@@ -21,8 +21,9 @@ mod tests {
         recipe::{FurnaceRecipe, RecipeInputOrOutput, ShapedRecipe, ShapelessRecipe},
     };
     use crate::block::Block;
-    use crate::block::component::BlockCollisionBoxComponent;
-    use crate::vio::Vec3;
+    use crate::block::component::{BlockCollisionBoxComponent, BlockCraftingTableComponent, BlockDestructibleByExplosionComponent, BlockDestructibleByMiningComponent};
+    use crate::item::item_registry::ItemAtlasEntry;
+    use crate::vio::{Identifier, Vec3};
 
     #[test]
     fn main() {
@@ -51,9 +52,17 @@ mod tests {
             }],
         };
 
+        pack.register_item_texture(ItemAtlasEntry {
+            id: "test_test".to_string(),
+            texture_name: "test_test".to_string(),
+            path: r"C:\Users\User\newgito\bluestone.png".to_string(),
+        });
+
         pack.register_item(Item {
-            type_id: "test:test".to_string(),
-            texture: r"C:\Users\User\newgito\bluestone.png".to_string(),
+            type_id: Identifier {
+                namespace: "test",
+                value: "test"
+            },
             components: vec![
                 &ItemDamageComponent { value: 3 },
                 &ItemDisplayNameComponent { value: "Test" },
@@ -117,7 +126,7 @@ mod tests {
             ingredients: vec![RecipeInputOrOutput {
                 use_tag: false,
                 key: Some("#"),
-                item: Some("amethyst_shard"),
+                item: Some("minecraft:amethyst_shard"),
                 data: Some(0),
                 count: None,
                 tag: None,
@@ -135,9 +144,17 @@ mod tests {
         pack.register_recipe(&test_item_recipe);
         pack.register_recipe(&test_item_shapeless_recipe);
         pack.register_recipe(&test_item_shaped_recipe);
+        
+        let crafting_table_component = &BlockCraftingTableComponent {
+            name: "super_duper_crafting_table",
+            tags: vec!["super_duper_crafting_table"]
+        };
 
         pack.register_block(Block {
-            type_id: "amex:test".to_string(),
+            type_id: Identifier {
+                namespace: "amex",
+                value: "test"
+            },
             components: vec![
                 &BlockCollisionBoxComponent {
                     origin: Some(Vec3 {
@@ -147,6 +164,13 @@ mod tests {
                         x: 16, y: 16, z: 16
                     }),
                     enabled: true
+                },
+                crafting_table_component,
+                &BlockDestructibleByExplosionComponent {
+                    explosion_resistance: Some(1.0)
+                },
+                &BlockDestructibleByMiningComponent {
+                    seconds_to_destroy: Some(10.0)
                 }
             ],
             texture_set: r"C:\Users\User\OneDrive\Рабочий стол\chipped_be\i2bdata\acacia_crate_top.png".to_string(),

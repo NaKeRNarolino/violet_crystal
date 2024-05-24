@@ -133,10 +133,10 @@ impl<'a> BlockRegistry<'a> {
     pub fn add_block(&mut self, block: Block<'a>) {
         self.blocks.push(block.clone());
         self.block_atlas.push(BlockAtlasEntry {
-            id: block.clone().type_id,
+            id: block.clone().type_id.render(),
             path: block.clone().texture_set,
             textures: block
-                .type_id
+                .type_id.render()
                 .chars()
                 .into_iter()
                 .map(|x| if x == ':' { '_' } else { x })
@@ -144,7 +144,7 @@ impl<'a> BlockRegistry<'a> {
             sound: block.clone().sound,
         });
         self.terrain_atlas.push(TerrainAtlasEntry {
-            id: block.clone().type_id,
+            id: block.clone().type_id.render(),
             texture_path: block.clone().texture_set
         });
     }

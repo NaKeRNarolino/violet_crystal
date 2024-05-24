@@ -60,15 +60,9 @@ impl<'a> ItemRegistry<'a> {
 
     pub fn add_item(&mut self, item: Item<'a>) {
         self.items.push(item.clone());
-        self.item_atlas.push(ItemAtlasEntry {
-            id: item.clone().type_id,
-            path: item.clone().texture,
-            texture_name: item
-                .type_id
-                .chars()
-                .into_iter()
-                .map(|x| if x == ':' { '_' } else { x })
-                .collect(),
-        });
+    }
+    
+    pub fn add_texture(&mut self, entry: ItemAtlasEntry) {
+        self.item_atlas.push(entry);
     }
 }

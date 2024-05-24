@@ -1,5 +1,5 @@
 {
-  "format_version": "1.20.40",
+  "format_version": "1.20.80",
   "minecraft:block": {
     "description": {
       "identifier": "amex:test",
@@ -18,6 +18,18 @@
           16,
           16
         ]
+      },
+      "minecraft:crafting_table": {
+        "crafting_tags": [
+          "super_duper_crafting_table"
+        ],
+        "table_name": "super_duper_crafting_table"
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 1
+      },
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 10
       }
     },
     "permutations": []
