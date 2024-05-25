@@ -15,7 +15,7 @@ pub fn error(str: String, additional: String) {
     let output = format!(
         "{} {} {} {}",
         "[ VioletCrystal ]".bright_magenta(),
-        "[ INFO ]".bright_red(),
+        "[ ERROR ]".bright_red(),
         additional.bright_red(),
         str
     );

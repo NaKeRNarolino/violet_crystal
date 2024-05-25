@@ -26,7 +26,7 @@
         ]
       },
       "minecraft:allow_off_hand": {
-        "value": "true"
+        "value": true
       }
     }
   }

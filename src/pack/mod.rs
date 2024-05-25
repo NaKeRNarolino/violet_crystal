@@ -12,7 +12,7 @@ use crate::template::{BpManifestTemplate, RpManifestTemplate};
 
 use uuid::Uuid;
 use crate::block::Block;
-use crate::block::block_registry::{BlockAtlasEntry, BlockAtlasTemplate, BlockRegistry, serialize_block_atlas, serialize_terrain_atlas};
+use crate::block::block_registry::{BlockAtlasEntry, BlockAtlasTemplate, BlockRegistry, serialize_block_atlas, serialize_terrain_atlas, TerrainAtlasTemplate};
 
 pub struct ScriptData<'a> {
     pub mc_server_version: String,
@@ -440,8 +440,9 @@ impl<'a> Pack<'a> {
             "./violet_crystal_results/packs/{}/RP/textures/",
             &self.id
         ));
-        let content_raw = BlockAtlasTemplate {
+        let content_raw = TerrainAtlasTemplate {
             content: serialize_terrain_atlas(&self.block_registry.terrain_atlas),
+            pack_name: self.name.clone(),
         }
             .render()
             .unwrap();

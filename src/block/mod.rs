@@ -1,15 +1,22 @@
 use std::sync::Mutex;
 use askama::Template;
+use crate::block::permutation::BlockPermutation;
+use crate::block::state::BlockState;
 use crate::vio::Identifier;
 use self::component::BlockComponent;
 
 pub mod block_registry;
 pub mod component;
 
+pub mod permutation;
+pub mod state;
+
 #[derive(Clone)]
 pub struct Block<'a> {
     pub type_id: Identifier<'a>,
     pub components: Vec<&'a dyn BlockComponent>,
+    pub permutations: Vec<BlockPermutation<'a>>,
+    pub states: Vec<&'a dyn BlockState>,
     pub texture_set: String,
     pub sound: String,
 }
@@ -29,12 +36,28 @@ impl<'a> Block<'a> {
             components_strings.push(fser);
         }
         components_strings.last_mut().unwrap().pop();
+
+        let mut permutations = String::from("");
+        for perm in self.permutations.clone() {
+            permutations.push_str(perm.serialize().as_str());
+            permutations.push(',');
+        }
+        permutations.pop();
+
+        let mut states = String::from("");
+        for perm in self.states.clone() {
+            states.push_str(perm.serialize().as_str());
+            states.push(',');
+        }
+        states.pop();
+
+
         BlockTemplate {
             type_id: self.clone().type_id.render(),
             components: components_strings.join("\n"),
             traits: "".to_string(),
-            states: "".to_string(),
-            permutations: "".to_string()
+            states,
+            permutations,
         }
             .render()
             .unwrap()

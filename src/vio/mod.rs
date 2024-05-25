@@ -1,8 +1,8 @@
 #[derive(Clone, Copy)]
 pub struct Vec3 {
-    pub x: i32,
-    pub y: i32,
-    pub z: i32,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 #[derive(Clone, Copy)]
@@ -15,4 +15,9 @@ impl Identifier<'_> {
     pub fn render(&self) -> String {
         format!("{}:{}", self.namespace, self.value)
     }
+}
+
+pub struct Pair<T, K> {
+    pub first: T,
+    pub second: K
 }

@@ -4,7 +4,7 @@
     1,
     0
   ],
-  "amex_test": {
+  "amex:test": {
     "sound": "stone",
     "textures": "amex_test"
   }

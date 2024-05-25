@@ -90,10 +90,7 @@ impl BlockAtlasEntry {
                 .collect(),
             id: self
                 .clone()
-                .id
-                .chars()
-                .map(|x| if x == ':' { '_' } else { x })
-                .collect(),
+                .id,
             sound: self.clone().sound,
         }
         .render()

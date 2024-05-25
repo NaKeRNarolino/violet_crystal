@@ -21,15 +21,17 @@ mod tests {
         recipe::{FurnaceRecipe, RecipeInputOrOutput, ShapedRecipe, ShapelessRecipe},
     };
     use crate::block::Block;
-    use crate::block::component::{BlockCollisionBoxComponent, BlockCraftingTableComponent, BlockDestructibleByExplosionComponent, BlockDestructibleByMiningComponent};
+    use crate::block::component::{BlockCollisionBoxComponent, BlockCraftingTableComponent, BlockDestructibleByExplosionComponent, BlockDestructibleByMiningComponent, BlockFlammableComponent, BlockFrictionComponent, BlockGeometryComponent};
+    use crate::block::permutation::BlockPermutation;
+    use crate::block::state::BoolBlockState;
     use crate::item::item_registry::ItemAtlasEntry;
-    use crate::vio::{Identifier, Vec3};
+    use crate::vio::{Identifier, Pair, Vec3};
 
     #[test]
     fn main() {
         let scripts = Some(ScriptData {
             mc_server_ui_version: "1.2.0-beta".to_string(),
-            mc_server_version: "1.9.0-beta".to_string(),
+            mc_server_version: "1.11.0-beta".to_string(),
             paired_scripts_folder: r"./src-scripts",
         });
         let mut pack = Pack::new(
@@ -145,10 +147,15 @@ mod tests {
         pack.register_recipe(&test_item_shapeless_recipe);
         pack.register_recipe(&test_item_shaped_recipe);
         
-        let crafting_table_component = &BlockCraftingTableComponent {
+        let crafting_table_component = BlockCraftingTableComponent {
             name: "super_duper_crafting_table",
             tags: vec!["super_duper_crafting_table"]
         };
+        let flammable =
+            BlockFlammableComponent::default();
+
+
+        let collision_box = BlockCollisionBoxComponent::full();
 
         pack.register_block(Block {
             type_id: Identifier {
@@ -156,25 +163,39 @@ mod tests {
                 value: "test"
             },
             components: vec![
-                &BlockCollisionBoxComponent {
-                    origin: Some(Vec3 {
-                        x: 0, y: 0, z: 0
-                    }),
-                    size: Some(Vec3 {
-                        x: 16, y: 16, z: 16
-                    }),
-                    enabled: true
-                },
-                crafting_table_component,
+                &collision_box,
+                &crafting_table_component,
                 &BlockDestructibleByExplosionComponent {
                     explosion_resistance: Some(1.0)
                 },
                 &BlockDestructibleByMiningComponent {
                     seconds_to_destroy: Some(10.0)
-                }
+                },
+                &flammable,
+                &BlockFrictionComponent {
+                    friction: 0.7,
+                },
             ],
             texture_set: r"C:\Users\User\OneDrive\Рабочий стол\chipped_be\i2bdata\acacia_crate_top.png".to_string(),
             sound: "stone".to_string(),
+            permutations: vec![
+                BlockPermutation {
+                    condition: "q.block_state('some_state') == 'b'",
+                    components: vec![
+                        &BlockFrictionComponent {
+                            friction: 0.1,
+                        }
+                    ]
+                }
+            ],
+            states: vec![
+                &BoolBlockState {
+                    id: Identifier {
+                        namespace: "amex",
+                        value: "test"
+                    }
+                }
+            ]
         });
 
         pack.generate(Some(false));
