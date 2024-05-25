@@ -11,7 +11,7 @@ publish = true
 
 [dependencies]
 askama = "0.12.1"
-serde = { features = ["derive"] }
+serde = { features = ["derive"], version = "1.0.203" }
 log = "0.4.20"
 simplelog = "0.12.1"
 colored = "2.1.0"
