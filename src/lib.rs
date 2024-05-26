@@ -33,18 +33,18 @@ mod tests {
             mc_server_ui_version: "1.2.0-beta".to_string(),
             mc_server_version: "1.11.0-beta".to_string(),
             paired_scripts_folder: r"./src-scripts",
-        });
+        }); // Script Data. Can be set to None if project doesn't use scripts
         let mut pack = Pack::new(
-            "TestThird".to_string(),
-            "testThird".to_string(),
-            "NaKeR".to_string(),
-            "1, 0, 0",
-            "Nothing here".to_string(),
-            true,
-            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_behavior_packs",
-            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_resource_packs",
-            r"C:\Users\User\newgito\bluestone.png",
-            &scripts,
+            "Violet Crystal".to_string(), // Pack Name
+            "violet_crystal".to_string(), // Pack Identifier
+            "NaKeR".to_string(), // Pack Author
+            "1, 0, 0", // Pack Version. Separated with commas 
+            "Nothing here".to_string(), // Pack Description
+            true, // Does the project use scripts
+            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_behavior_packs", // Developer BP Folder
+            r"C:\Users\User\AppData\Roaming\.minecraft_bedrock\installations\Latest Release\packageData\development_resource_packs", // Developer RP Folder
+            r"C:\Users\User\newgito\bluestone.png", // Pack Icon
+            &scripts, // Script Data which we defined earlier
         );
 
         let item_repairable = ItemRepairableComponent {
